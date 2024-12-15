@@ -32,6 +32,7 @@ async function getTrackData(input) {
             .then(response => response.json())
             .then(json => json.trackPieces)
             .then(pieces => generateData(pieces))
+            .then(a => {document.getElementById("dataResponse").innerHTML = "Track loaded!"; chrome.storage.local.set({"dataResponse": "Track loaded!"})})
     }
     catch {
         try {
@@ -40,6 +41,8 @@ async function getTrackData(input) {
             
             if (!JSONinput.every(piece => requirements.every(requirement => piece.hasOwnProperty(requirement)) && piece.p.length == 3)) throw new Error("invalid json");
             generateData(JSONinput)
+            document.getElementById("dataResponse").innerHTML = "Track loaded!"
+    chrome.storage.local.set({"dataResponse": "Track loaded!"})
         }
         catch {
             document.getElementById("dataResponse").innerHTML = "Invalid input. Using previous data."
@@ -89,9 +92,6 @@ async function generateData(pieces) {
     instructions.innerHTML = `Place ${pieces.length} pieces at 0, 0, 0 (not rotated)\nThen, save the track, exit, and re-enter.`
     const tab = await getCurrentTab();
     chrome.tabs.sendMessage(tab.id, fakeTrackData);
-    
-    document.getElementById("dataResponse").innerHTML = "Track loaded!"
-    chrome.storage.local.set({"dataResponse": "Track loaded!"})
     
 }
 
