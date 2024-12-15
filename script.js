@@ -51,8 +51,6 @@ async function getTrackData(input) {
 
 
 async function generateData(pieces) {
-    document.getElementById("dataResponse").innerHTML = "Track loaded!"
-    chrome.storage.local.set({"dataResponse": "Track loaded!y"})
     trackData = structuredClone(pieces)
     chrome.storage.local.set({"trackData": trackData})
 
@@ -91,6 +89,9 @@ async function generateData(pieces) {
     instructions.innerHTML = `Place ${pieces.length} pieces at 0, 0, 0 (not rotated)\nThen, save the track, exit, and re-enter.`
     const tab = await getCurrentTab();
     chrome.tabs.sendMessage(tab.id, fakeTrackData);
+    
+    document.getElementById("dataResponse").innerHTML = "Track loaded!"
+    chrome.storage.local.set({"dataResponse": "Track loaded!"})
     
 }
 
