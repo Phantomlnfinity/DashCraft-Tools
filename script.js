@@ -89,7 +89,7 @@ async function generateData(pieces) {
 
     fakeTrackData = pieces
     
-    instructions.innerHTML = `Place ${pieces.length} pieces at 0, 0, 0 (not rotated)\nThen, save the track, exit, and re-enter.`
+    instructions.innerHTML = `Make a new track and place ${pieces.length} pieces at 0, 0, 0 (not rotated)<br>Then, save the track, exit, and re-enter.`
     const tab = await getCurrentTab();
     chrome.tabs.sendMessage(tab.id, fakeTrackData);
     
