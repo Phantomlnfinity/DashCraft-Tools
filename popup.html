@@ -1,0 +1,30 @@
+<html>
+    <body>
+        <div id="loading"></div>
+        <div id="wrongpage" hidden>
+            <h1>Wrong page!</h1>
+            <p>This extension only works on <a target="_blank" href="https://dashcraft.io/">dashcraft.io</a></p>
+        </div>
+        <div id="main" hidden>
+            <h1>Track Importer</h1>
+            <input id="trackInput" placeholder="Link or JSON" autocomplete="off"><br>
+            <div id="dataResponse"><br></div>
+            <h3>Shift track (x, y, z)</h3>
+            <div>
+                <input id="x" type="number" placeholder=0 class="shift" autocomplete="off"><input id="y" type="number" placeholder=0 class="shift" autocomplete="off"><input id="z" type="number" placeholder=0 class="shift" autocomplete="off">
+            </div>
+            <h3>Rotate Track</h3>
+            <input id="r" type="number" placeholder=0 autocomplete="off">
+
+            <h3>Instructions</h3>
+            <div id="instructions"></div>
+            <br><br>
+        </div>
+        
+        
+    </body>
+    <head>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "DC Utils",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "externally_connectable": {
+    "ids": ["*"],
+    "matches": ["https://dashcraft.io/*"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://dashcraft.io/*"],
+      "js": ["onStart.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://dashcraft.io/*"],
+      "js": ["background.js"],
+      "run_at": "document_start"
+    }
+  ],
+
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  }
+}
