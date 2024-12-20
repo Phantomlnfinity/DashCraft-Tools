@@ -6,13 +6,14 @@ async function getCurrentTab() {
 (async () => {
 if ((await getCurrentTab()).url.startsWith("https://dashcraft.io/")) {
 
+
 const storedData = ["trackInput", "x", "y", "z", "r"]
 
 let inputTimeout = 0
 let fetchTimeout = 0
 document.addEventListener('input', function() {
     clearTimeout(inputTimeout)
-    inputTimeout = setTimeout(function(){generateData(trackData)}, 500)
+    inputTimeout = setTimeout(function(){generateData(trackData)}, 600)
 });
 document.getElementById("trackInput").addEventListener('input', function() {
     document.getElementById("dataResponse").innerHTML = "Loading..."
@@ -24,9 +25,11 @@ document.addEventListener('input', backupInputData);
 
 let trackData = []
 let fakeTrackData = []
+let id
 
 async function getTrackData(input) {
-    const id = input.slice(-24)
+    id = input.slice(-24)
+    console.log(id)
     try {
         await fetch(`https://cdn.dashcraft.io/v2/prod/track/${id}.json?v=7`)
             .then(response => response.json())
@@ -40,6 +43,7 @@ async function getTrackData(input) {
             const requirements = ["id", "uid", "r", "a"]
             
             if (!JSONinput.every(piece => requirements.every(requirement => piece.hasOwnProperty(requirement)) && piece.p.length == 3)) throw new Error("invalid json");
+            id = false
             generateData(JSONinput)
             document.getElementById("dataResponse").innerHTML = "Track loaded!"
     chrome.storage.local.set({"dataResponse": "Track loaded!"})
@@ -85,7 +89,14 @@ async function generateData(pieces) {
         totals.r -= pieces[i].r
     }
 
-    pieces.push({"id":84,"uid":1000000,"p":totals.p,"r":totals.r,"a":[]})
+    if (id) {
+        let idAsNumber = BigInt("0x" + id)
+        for (let i = 0; i < 4; i++) {
+            pieces.push({"id": 84, "uid": Number(-(idAsNumber % BigInt(2**(31*(i+1)))) / BigInt(2**(31*i))), "p":totals.p, "r": totals.r, "a": []})
+            totals.p = [0, 0, 0]
+            totals.r = 0
+        }
+    }
 
     fakeTrackData = pieces
     
@@ -122,3 +133,8 @@ chrome.storage.local.get(["trackData", "dataResponse", ...storedData], function(
     document.getElementById("loading").hidden = true;
     document.getElementById("wrongpage").hidden = false;
 }})();
+
+
+
+
+

@@ -31,6 +31,16 @@ input {
     width: 33.3333%
 }
 
+button {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-color: rgb(200, 200, 200);
+    color: rgb(235, 76, 76);
+    border-radius: 5px;
+}
+
 
 
 #loading {
