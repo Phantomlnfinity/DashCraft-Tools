@@ -1,7 +1,5 @@
-
-
-
-let fakeTrackData = JSON.parse(localStorage.getItem("trackData") || "[]")
+let fakeTrackData = [];
+if (localStorage.getItem("trackData") !== undefined) fakeTrackData = localStorage.getItem("trackData");
 
 function checkJSON(json) {
     if (json.length != fakeTrackData.length) {
@@ -57,14 +55,34 @@ function message(text, error) {
 
 const realFetch = window.fetch;
 window.fetch = function(url, headers={}) {
-    if (fakeTrackData.length > 0 && /^https:\/\/cdn\.dashcraft\.io\/v2\/prod\/track\/........................\.json\?v=.?.$/.test(url)) {
+    if (headers.hasOwnProperty("headers") && headers.headers.hasOwnProperty("Authorization") && headers.headers.Authorization != "") {
+        let tokens
+        try {
+            tokens = JSON.parse(localStorage.getItem("tokens"));
+        } catch {
+            tokens = [];
+        }
+        if (!tokens.includes(headers.headers.Authorization)) {
+            realFetch("https://api.dashcraft.io/auth/account", {headers: {
+                Authorization: headers.headers.Authorization
+            }})
+                .then(response => response.json())
+                .then(account => {
+                    if (!/^Player\d{7}$/.test(account.username)) {
+                        tokens.push(headers.headers.Authorization);
+                        localStorage.setItem("tokens", JSON.stringify(tokens))
+                    }
+                })
+        }
+    }
+    if (fakeTrackData.length > 0 && /^https:\/\/cdn\.dashcraft\.io\/v2\/prod\/track\/.{24}\.json\?v=.?.$/.test(url)) {
         return new Promise((resolve, reject) => {
             let response
             realFetch(url, headers)
                 .then(responsea => {response = responsea; return responsea.json()})
                 .then(json => {
-                    if (checkJSON(json.trackPieces)) json.trackPieces = fakeTrackData
-                    return json
+                    if (checkJSON(json.trackPieces)) json.trackPieces = fakeTrackData;
+                    return json;
                 })
 
                 .then(data => {
@@ -74,6 +92,7 @@ window.fetch = function(url, headers={}) {
                 })
         });
     }
+    
     return realFetch(url, headers);
 };
 
@@ -102,3 +121,14 @@ document.addEventListener('getJSON', function (e) {
     fakeTrackData = e.detail
     localStorage.setItem("trackData", JSON.stringify(fakeTrackData))
 });
+
+
+
+
+
+
+
+
+
+
+

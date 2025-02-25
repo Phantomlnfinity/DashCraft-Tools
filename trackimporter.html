@@ -1,0 +1,31 @@
+<html>
+    <body>
+        <div id="loading"></div>
+        <div id="main" hidden>
+            <h1>Track Importer</h1>
+            <div class="inputwrapper"><input id="trackInput" placeholder="Link or JSON" autocomplete="off"></div>
+            <div id="dataResponse"><br></div>
+            <h3>Shift track (x, y, z)</h3>
+            <div>
+                <div class="inputwrapper shift"><input id="x" type="number" placeholder=0 autocomplete="off"></div>
+                <div class="inputwrapper shift"><input id="y" type="number" placeholder=0 autocomplete="off"></div>
+                <div class="inputwrapper shift"><input id="z" type="number" placeholder=0 autocomplete="off"></div>
+            </div>
+            <h3>Rotate Track</h3>
+            <div class="inputwrapper"><input id="r" type="number" placeholder=0 autocomplete="off"></div>
+
+            <h3>Instructions</h3>
+            <div id="instructions"></div>
+            
+            <hr style="border-width: 0px; width: 100%;">
+            <!-- <input type="checkbox" id="checkboxInput">
+            <label for="checkboxInput" class="toggleSwitch"></label><br> -->
+            <a href="./popup.html"><button><span class="text">Return home</span></button></a>
+            <br><br>    
+        </div>
+    </body>
+    <head>
+        <script src="trackimporter.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+</html>

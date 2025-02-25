@@ -1,13 +1,9 @@
+const storedData = ["trackInput", "x", "y", "z", "r"]
+
 async function getCurrentTab() {
     let [tab] = await chrome.tabs.query({active: true, currentWindow: true});
     return tab;
 }
-
-(async () => {
-if ((await getCurrentTab()).url.startsWith("https://dashcraft.io/")) {
-
-
-const storedData = ["trackInput", "x", "y", "z", "r"]
 
 let inputTimeout = 0
 let fetchTimeout = 0
@@ -46,7 +42,7 @@ async function getTrackData(input) {
             id = false
             generateData(JSONinput)
             document.getElementById("dataResponse").innerHTML = "Track loaded!"
-    chrome.storage.local.set({"dataResponse": "Track loaded!"})
+            chrome.storage.local.set({"dataResponse": "Track loaded!"})
         }
         catch {
             document.getElementById("dataResponse").innerHTML = "Invalid input. Using previous data."
@@ -89,20 +85,11 @@ async function generateData(pieces) {
         totals.r -= pieces[i].r
     }
 
-    if (id) {
-        let idAsNumber = BigInt("0x" + id)
-        for (let i = 0; i < 4; i++) {
-            pieces.push({"id": 84, "uid": Number(-(idAsNumber % BigInt(2**(31*(i+1)))) / BigInt(2**(31*i))), "p":totals.p, "r": totals.r, "a": []})
-            totals.p = [0, 0, 0]
-            totals.r = 0
-        }
-    }
-
     fakeTrackData = pieces
     
     instructions.innerHTML = `Make a new track and place ${pieces.length} pieces at 0, 0, 0 (not rotated)<br>Then, save the track, exit, and re-enter.`
     const tab = await getCurrentTab();
-    chrome.tabs.sendMessage(tab.id, fakeTrackData);
+    chrome.tabs.sendMessage(tab.id, {type: "getJSON", data: fakeTrackData});
     
 }
 
@@ -129,10 +116,7 @@ chrome.storage.local.get(["trackData", "dataResponse", ...storedData], function(
 
 
 
-} else {
-    document.getElementById("loading").hidden = true;
-    document.getElementById("wrongpage").hidden = false;
-}})();
+
 
 
 
