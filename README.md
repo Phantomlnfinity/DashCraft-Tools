@@ -12,17 +12,18 @@ Then, click the puzzle piece icon icon at the top right and pin the extension.
 # Using the extension
 To start, open DashCraft and click on the extension icon. There will be a few different buttons which all lead to seperate tools:
 
-### Account Switcher
+## Account Switcher
 Whenever you are signed in to an account, your account token will automatically be saved. Then, you can sign in to them by clicking the buttons in this menu.
 <br>You can delete accounts by clicking on the right side of the sign in button.
-<br><br>**Important note**: While an account token can let anybody sign in to your account, this extension only stores it on your computer so there is no added risk.
+<br><br>**IMPORTANT NOTE**: While an account token can let anybody sign in to your account, this extension only stores them on your computer and not on any servers. Tokens aren't very secure anyways (running any bookmarklet or extension while on DashCraft can let somebody steal it), so having it stored in the extension doesn't sacrifice any security.
 
-### Track Importer
+## Track Importer
 Upon opening the track importer, you'll see 3 input sections:
 - The first box is the track. You can either put in a track link or JSON data of the track pieces. Once you put in the link or JSON, it'll automatically load the track.
 - The extension also allows you to move the track around. This allows you to reposition the track vertically, off-grid, or outside of the stadium. Keep in mind that 15 units here is equal to 1 unit in game.
 - Finally, you can also rotate the track. DashCraft stores rotations in degrees, so you're able to have rotations that are impossible to achieve in-game. However, rotations that aren't in 90 degree increments will cause the pieces to be slightly misaligned because the game automatically rounds block positions.
-<br>After changing the settings, follow the instructions given at the bottom.
+<!---->
+After changing the settings, follow the instructions given at the bottom.
 
-### Copy Detector
-This is a very simple tool, used to check if a track has been copied or has illegal block placements. Just put a link in and it'll tell you.
+## Copy Detector
+This is a very simple tool that checks if a track has been copied or has illegal block placements. Just put a link in and it'll tell you.
