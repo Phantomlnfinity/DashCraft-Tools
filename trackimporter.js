@@ -107,7 +107,7 @@ chrome.storage.local.get(["trackData", "dataResponse", ...storedData], function(
     trackData = data.trackData
     document.getElementById("dataResponse").innerHTML = data.dataResponse || "<br>"
     for (let i = 0; i < storedData.length; i++) {
-        document.getElementById(storedData[i]).value = data[storedData[i]]
+        document.getElementById(storedData[i]).value = data[storedData[i]] || ""
     }
     generateData(trackData)
     document.getElementById("loading").hidden = true;
