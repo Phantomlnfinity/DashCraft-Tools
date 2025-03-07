@@ -1,40 +1,11 @@
-let fakeTrackData = [];
-if (localStorage.getItem("trackData") !== undefined) fakeTrackData = localStorage.getItem("trackData");
-
-function checkJSON(json) {
-    if (json.length != fakeTrackData.length) {
-        message(`Track has ${json.length} pieces but should have ${fakeTrackData.length}. Opening regular track instead.`, true)
-        return false
-    }
-    let totalsa = {p: [0, 0, 0], r: 0}
-    let totalsb = {p: [0, 0, 0], r: 0}
-    for (let i = 0; i < json.length; i++) {
-        for (let j = 0; j < 3; j++) {
-            totalsa.p[j] -= json[i].p[j];
-            totalsb.p[j] -= fakeTrackData[i].p[j];
-        }
-        totalsa.r -= json[i].r
-        totalsb.r -= fakeTrackData[i].r
-    }
-    if (totalsa.p[0] != totalsb.p[0]) {
-        message(`Total of x coordinates is ${totalsa.p[0]} but should be ${totalsb.p[0]}.\n Opening regular track instead.`, true)
-        return false
-    } 
-    if (totalsa.p[1] != totalsb.p[1]) {
-        message(`Total of y coordinates is ${totalsa.p[1]} but should be ${totalsb.p[1]}.\n Opening regular track instead.`, true)
-        return false
-    }
-    if (totalsa.p[2] != totalsb.p[2]) {
-        message(`Total of z coordinates is ${totalsa.p[2]} but should be ${totalsb.p[2]}.\n Opening regular track instead.`, true)
-        return false
-    }
-    if (totalsa.r != totalsb.r) {
-        message(`Total of rotations is ${totalsa.r} but should be ${totalsb.r}.\n Opening regular track instead.`, true)
-        return false
-    }
-    message("JSON swapped successfully!", false)
-    return true
+let fakeTrackData;
+try {
+    fakeTrackData = JSON.parse(localStorage.getItem("trackData"));
 }
+catch {
+    fakeTrackData = [];
+}
+
 
 
 
@@ -81,7 +52,14 @@ window.fetch = function(url, headers={}) {
             realFetch(url, headers)
                 .then(responsea => {response = responsea; return responsea.json()})
                 .then(json => {
-                    if (checkJSON(json.trackPieces)) json.trackPieces = fakeTrackData;
+                    const newData = generateData(json.trackPieces, fakeTrackData);
+                    console.log(newData);
+                    if (json.trackPieces.length != newData.length) {
+                        message(`Track has ${json.trackPieces.length} pieces but should have ${newData.length}. Opening regular track instead.`, true)
+                    } else {
+                        json.trackPieces = newData;
+                        message("JSON swapped successfully!", false)
+                    }
                     return json;
                 })
 
@@ -123,6 +101,34 @@ document.addEventListener('getJSON', function (e) {
 });
 
 
+
+
+
+
+
+function generateData(pieces, fakePieces) {    
+    let newPieces = structuredClone(fakePieces);
+    function getTotal(array) {
+        let total = {p: [0, 0, 0], r: 0}
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < 3; j++) {
+                total.p[j] += array[i].p[j];
+            }
+            total.r += array[i].r
+        }
+        return total
+    }
+
+    const oldTotal = getTotal(pieces);
+    const newTotal = getTotal(fakePieces);
+    console.log(oldTotal, newTotal);
+    const dif = {p: [oldTotal.p[0] - newTotal.p[0], oldTotal.p[1] - newTotal.p[1], oldTotal.p[2] - newTotal.p[2]], rotation: oldTotal.r - newTotal.r};
+    if (dif.p.some(p => p != 0) || dif.rotation != 0) {
+        newPieces.push({"id":84,"uid":1000000,"p":dif.p,"r":dif.rotation,"a":[]});
+    }
+    return newPieces;
+
+}
 
 
 

@@ -76,18 +76,18 @@ async function generateData(pieces) {
             pieces[i].p[j] += shift[j];
         }
         pieces[i].r += rotation;
-        if (totals.p.map((p, index) => p-pieces[i].p[index]).some(p => Math.abs(p) > 2**24-1) || totals.r + Math.abs(pieces[i].r) > 2**24-1) {
-            pieces.splice(i, 0, {"id":84,"uid":1000000,"p":totals.p,"r":totals.r,"a":[]})
-            totals = {p: [0, 0, 0], r: 0}
-            continue
-        }
         totals.p = totals.p.map((p, index) => p - pieces[i].p[index])
         totals.r -= pieces[i].r
+        if (totals.p.some(p => Math.abs(p) > 2**24-1) || Math.abs(totals.r) > 2**24-1) {
+            pieces.splice(i, 0, {"id":84,"uid":1000000,"p":totals.p.map((p, index) => p + pieces[i].p[index]),"r":totals.r + pieces[i].r,"a":[]});
+            totals = {p: pieces[i+1].p.map(p => -p), r: -pieces[i+1].r};
+            i++;
+        }
     }
 
     fakeTrackData = pieces
     
-    instructions.innerHTML = `Make a new track and place ${pieces.length} pieces at 0, 0, 0 (not rotated)<br>Then, save the track, exit, and re-enter.`
+    instructions.innerHTML = `Open a track with exactly ${pieces.length + 1} pieces.`
     const tab = await getCurrentTab();
     chrome.tabs.sendMessage(tab.id, {type: "getJSON", data: fakeTrackData});
     
