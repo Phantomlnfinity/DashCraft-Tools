@@ -21,9 +21,9 @@ Whenever you are signed in to an account, your account token will automatically 
 Upon opening the track importer, you'll see 3 input sections:
 - The first box is the track. You can either put in a track link or JSON data of the track pieces. Once you put in the link or JSON, it'll automatically load the track.
 - The extension also allows you to move the track around. This allows you to reposition the track vertically, off-grid, or outside of the stadium. Keep in mind that 15 units here is equal to 1 unit in game.
-- Finally, you can also rotate the track. DashCraft stores rotations in degrees, so you're able to have rotations that are impossible to achieve in-game. However, rotations that aren't in 90 degree increments will cause the pieces to be slightly misaligned because the game automatically rounds block positions.
+- Finally, you can also rotate the track. DashCraft stores rotations in degrees, so you're able to have rotations that are impossible to achieve in-game. However, rotations that aren't in 90 degree increments will cause the pieces to be slightly misaligned because the game automatically rounds piece positions.
 <!---->
-After changing the settings, follow the instructions given at the bottom.
+After changing the settings, follow the instructions given at the bottom. It'll work on any track with the correct number of pieces.
 
 ## Copy Detector
-This is a very simple tool that checks if a track has been copied or has illegal block placements. Just put a link in and it'll tell you.
+This is a very simple tool that checks if a track has been copied or has illegal piece placements. Just put a link in and it'll tell you.
