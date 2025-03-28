@@ -2,8 +2,22 @@
     <body>
         <div id="loading"></div>
         <div id="main" hidden>
-            <h1>Track Importer</h1>
-            <div class="inputwrapper"><input id="trackInput" placeholder="Link or JSON" autocomplete="off"></div>
+            <h1>Track Importer</h1> 
+
+            <div id="trackInputs">
+                <div id="input1">
+                    <div class="inputwrapper" style="width: calc(100% - 45px); float: left; margin: 8px 0 0 0;">
+                        <input id="trackInput1" placeholder="Link or JSON" autocomplete="off">
+                    </div>
+                    
+                    <button id="addtrack"style="width: 45px; height: 45px; float: left; margin: 8px 0 0 0; background-color: green; background-image: none;">
+                        <image src="plus.png" width="100%"></image>
+                    </button>
+                </div>
+            </div>
+
+
+            <hr style="border-width: 0px; width: 100%;">
             <div id="dataResponse">Awaiting input...</div>
             <h3>Shift track (x, y, z)</h3>
             <div>

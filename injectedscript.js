@@ -6,9 +6,6 @@ catch {
     fakeTrackData = [];
 }
 
-
-
-
 function message(text, error) {
     const messagebox = document.getElementById("messagebox")    
     if (error) {
